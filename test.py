@@ -38,9 +38,7 @@ dataset.append(data)
 
 i = 0
 
-
-
-
+###############map setting#############################
 maxlong = 145
 minlong = 140
 
@@ -50,18 +48,30 @@ minlatitude = 30
 
 selectdata = []
 
+
 i = 0
 
-heapmap =  np.zeros((5,5),float)
+
+Interval = 1
+
+
+heaplonge = (maxlong - minlong)/Interval   #how many cell 
+heaplae = (maxlatitude - minlatitude)/Interval  #how many cell 
+
+
+heapmap =  np.zeros((heaplonge,heaplae),float)
 
 heaplongs = 0
 heaplas = 0
 
-heaplonge = 5
-heaplae = 5
 
-for heaplongs in range(heaplonge):
-    for heaplas in range(heaplae):
+###########map setting################################
+
+
+
+
+for heaplongs in range(0,heaplonge):
+    for heaplas in range(0,heaplae):
         heapmap[heaplongs][heaplas] = 0.0
 
 heaplongs = 0
@@ -70,7 +80,7 @@ heaplas = 0
 nc = 0
 
 
-Interval = 1
+
 
 selectyear = 2010
 selectmonths = 1
@@ -82,48 +92,38 @@ heaplas = 0
 
 
 
-for heaplongs in range(heaplonge):
-    for heaplas in range(heaplae):
+for heaplongs in range(0,heaplonge):
+    for heaplas in range(0,heaplae):
         for i  in range(len(dataset)):
-            if dataset[i].pointlong <= minlong + heaplongs + Interval  and dataset[i].pointlong >= minlong + heaplongs and dataset[i].pointlatitude <= minlatitude + heaplas + Interval and dataset[i].pointlatitude >= minlatitude + heaplas:
+            if dataset[i].pointlong <= minlong + heaplongs*Interval + Interval  and dataset[i].pointlong >= minlong + heaplongs and dataset[i].pointlatitude <= minlatitude + heaplas + Interval and dataset[i].pointlatitude >= minlatitude + heaplas:
                 if dataset[i].year == selectyear and dataset[i].month <= selectmonthe and dataset[i].month >= selectmonths:
-                    heapmap[heaplongs][heaplas] += dataset[i].magnitude
+                    heapmap[heaplongs][heaplas] += 1
                     nc += 1
-        if nc == 0 : nc = 1
+        
+        #
+
+print " "
+for heaplongs in range(0,heaplonge):
+    for heaplas in range(0,heaplae):
         print heapmap[heaplongs][heaplas],
         heapmap[heaplongs][heaplas] /= nc
-        #heapmap[heaplongs][heaplas] /= 10
-        nc = 0
-    print " "
-
-
-
-
-heaplongs = 0
-heaplas = 0
-
-for heaplongs in range(heaplonge):
-    for heaplas in range(heaplae):
-        print heapmap[heaplongs][heaplas],
     
     print " "
         
-print " "
-print nc
-print s
+
 
 
 #here's our data to plot, all normal Python lists
 x = [140, 141, 142, 143, 144,145]
 y = [35, 36, 37, 38,39,40]
+ 
+intensity =  np.zeros((heaplonge,heaplae),float)
 
-intensity = [
-    [heapmap[0][4], heapmap[1][4], heapmap[2][4], heapmap[2][4], heapmap[2][4]],
-    [heapmap[0][3], heapmap[1][3], heapmap[2][3], heapmap[2][3], heapmap[2][3]],
-    [heapmap[0][2], heapmap[1][2], heapmap[2][2], heapmap[2][2], heapmap[2][2]],
-    [heapmap[0][1], heapmap[1][1], heapmap[2][1], heapmap[2][1], heapmap[2][1]],
-    [heapmap[0][0], heapmap[1][0], heapmap[2][0], heapmap[2][0], heapmap[2][0]]
-]
+for i in range(0,heaplonge):
+    for j in range(0,heaplae):
+        intensity[i][j] = heapmap[i][heaplae - 1 - j] 
+
+
 
 #setup the 2D grid with Numpy
 x, y = np.meshgrid(x, y)

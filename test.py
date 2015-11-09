@@ -55,11 +55,11 @@ i = 0
 Interval = 1
 
 
-heaplonge = (maxlong - minlong)/Interval   #how many cell 
-heaplae = (maxlatitude - minlatitude)/Interval  #how many cell 
+heaplonge = (int)((maxlong - minlong)/Interval)   #how many cell 
+heaplae = (int)((maxlatitude - minlatitude)/Interval)  #how many cell 
 
 
-heapmap =  np.zeros((heaplonge,heaplae),float)
+heapmap =  np.zeros((heaplae,heaplonge),float)
 
 heaplongs = 0
 heaplas = 0
@@ -70,9 +70,9 @@ heaplas = 0
 
 
 
-for heaplongs in range(0,heaplonge):
-    for heaplas in range(0,heaplae):
-        heapmap[heaplongs][heaplas] = 0.0
+for heaplas in range(0,heaplae):
+    for heaplongs in range(0,heaplonge):
+        heapmap[heaplas][heaplongs] = 0.0
 
 heaplongs = 0
 heaplas = 0
@@ -91,37 +91,58 @@ heaplongs = 0
 heaplas = 0
 
 
+print "hdaoplinge  = " , heaplonge
 
-for heaplongs in range(0,heaplonge):
-    for heaplas in range(0,heaplae):
+
+for heaplas in range(0,heaplae):
+    for heaplongs in range(0,heaplonge):
         for i  in range(len(dataset)):
-            if dataset[i].pointlong <= minlong + heaplongs*Interval + Interval  and dataset[i].pointlong >= minlong + heaplongs and dataset[i].pointlatitude <= minlatitude + heaplas + Interval and dataset[i].pointlatitude >= minlatitude + heaplas:
+            if dataset[i].pointlong <= minlong + heaplongs*Interval + Interval  and dataset[i].pointlong >= minlong + heaplongs*Interval and dataset[i].pointlatitude <= minlatitude + heaplas*Interval + Interval and dataset[i].pointlatitude >= minlatitude + heaplas*Interval:
                 if dataset[i].year == selectyear and dataset[i].month <= selectmonthe and dataset[i].month >= selectmonths:
-                    heapmap[heaplongs][heaplas] += 1
+                    heapmap[heaplas][heaplongs] += 1
                     nc += 1
         
         #
 
 print " "
-for heaplongs in range(0,heaplonge):
-    for heaplas in range(0,heaplae):
-        print heapmap[heaplongs][heaplas],
-        heapmap[heaplongs][heaplas] /= nc
+
+print "c = " , nc
+
+
+for i in range(0,heaplae):
+    for j in range(0,heaplonge):
+        print heapmap[i][j],
     
     print " "
         
 
 
 
-#here's our data to plot, all normal Python lists
-x = [140, 141, 142, 143, 144,145]
-y = [35, 36, 37, 38,39,40]
- 
-intensity =  np.zeros((heaplonge,heaplae),float)
+for i in range(0,heaplae):
+    for j in range(0,heaplonge):
+        heapmap[i][j] /= nc
+        print heapmap[i][j],
+    
+    print " "
+        
 
-for i in range(0,heaplonge):
-    for j in range(0,heaplae):
-        intensity[i][j] = heapmap[i][heaplae - 1 - j] 
+
+
+
+
+#here's our data to plot, all normal Python lists
+
+x =  np.zeros((heaplonge + 1),float)
+y =  np.zeros((heaplae + 1),float)
+
+for i in range(0,heaplonge + 1): x[i] = minlong + i * Interval
+for i in range(0,heaplae + 1): y[i] = minlatitude + i * Interval
+
+intensity =  np.zeros((heaplae,heaplonge),float)
+
+for i in range(0, heaplae):
+    for j in range(0,heaplonge):
+        intensity[i][j] = heapmap[heaplae - 1 - i][j] 
 
 
 

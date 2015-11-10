@@ -1,5 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import random
+import math
+
 
 
 class stru:
@@ -109,14 +112,14 @@ print " "
 print "c = " , nc
 
 
+print "happen times"
+
 for i in range(0,heaplae):
     for j in range(0,heaplonge):
         print heapmap[i][j],
     
     print " "
         
-
-
 
 for i in range(0,heaplae):
     for j in range(0,heaplonge):
@@ -126,12 +129,92 @@ for i in range(0,heaplae):
     print " "
         
 
+print " "
+
+print "happen/happen sum : "
+
+for i in range(0, heaplae):
+    for j in range(0,heaplonge):
+        print heapmap[heaplae - 1 - i][j],
+
+    print " "
 
 
-
-
+print " "
 #here's our data to plot, all normal Python lists
 
+
+
+
+
+
+################### random forecast###########################
+
+
+randomforecat = np.zeros((heaplae , heaplonge ),float)
+
+
+########## generate the uniform balue between 0 and 1 each vin 1###################
+for i in range(0,heaplae):
+    for j in range(0,heaplonge):
+        randomforecat[i][j] = random.uniform(0, 1)
+
+
+##################################################################
+
+print "randomforecat :"
+for i in range(0,heaplae):
+    for j in range(0, heaplonge):
+        print randomforecat[i][j],
+    print " "
+
+
+
+################# algorithm 1####################################
+
+def algo1(x, mu):
+    L = math.exp(-1 * mu)
+    k = 0
+    prob = 1
+
+    while prob < L:
+        k += 1
+        prob = prob * x
+
+    return k
+
+###############################################################
+
+
+#####################Transform ###############################
+
+
+integerrandomforecat = np.zeros((heaplae , heaplonge ),float)
+
+for i in range(0,heaplae):
+    for j in range(0,heaplonge):
+        
+        integerrandomforecat[i][j] = algo1(randomforecat[i][j], heapmap[i][j])
+
+##########################################################
+
+print "integerrandomforecat : "
+
+for i in range(0,heaplae):
+    for j in range(0, heaplonge):
+        print integerrandomforecat[i][j],
+    print " "
+
+
+
+
+
+
+
+
+
+
+############################print heapmap####################
 x =  np.zeros((heaplonge + 1),float)
 y =  np.zeros((heaplae + 1),float)
 
@@ -146,6 +229,7 @@ for i in range(0, heaplae):
 
 
 
+
 #setup the 2D grid with Numpy
 x, y = np.meshgrid(x, y)
 
@@ -157,6 +241,11 @@ plt.pcolormesh(x, y, intensity,cmap=plt.cm.Reds)
 #plt.pcolor(intensity,cmap=plt.cm.Reds)
 plt.colorbar() #need a colorbar to show the intensity scale
 plt.show() #boom
+
+
+
+
+############################print heapmap####################
 
 
 

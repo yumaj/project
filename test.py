@@ -39,7 +39,6 @@ data = stru()
 
 dataset.append(data)
 
-i = 0
 
 ###############map setting#############################
 maxlong = 145
@@ -51,8 +50,6 @@ minlatitude = 30
 
 selectdata = []
 
-
-i = 0
 
 
 Interval = 1
@@ -80,7 +77,7 @@ for heaplas in range(0,heaplae):
 heaplongs = 0
 heaplas = 0
 
-nc = 0
+nc = 0 ##earthquake happen times counter
 
 
 
@@ -89,9 +86,6 @@ selectyear = 2010
 selectmonths = 1
 selectmonthe = 12
 
-
-heaplongs = 0
-heaplas = 0
 
 
 print "hdaoplinge  = " , heaplonge
@@ -103,7 +97,7 @@ for heaplas in range(0,heaplae):
             if dataset[i].pointlong <= minlong + heaplongs*Interval + Interval  and dataset[i].pointlong >= minlong + heaplongs*Interval and dataset[i].pointlatitude <= minlatitude + heaplas*Interval + Interval and dataset[i].pointlatitude >= minlatitude + heaplas*Interval:
                 if dataset[i].year == selectyear and dataset[i].month <= selectmonthe and dataset[i].month >= selectmonths:
                     heapmap[heaplas][heaplongs] += 1
-                    nc += 1
+                    nc += 1  ##earthquake happen time + 1
         
         #
 
@@ -172,16 +166,17 @@ for i in range(0,heaplae):
 
 ################# algorithm 1####################################
 
-def algo1(x, mu):
-    L = math.exp(-1 * mu)
-    k = 0
-    prob = 1
-
-    while prob < L:
-        k += 1
-        prob = prob * x
-
-    return k
+def algo1(x, mu):       ##############from Claus  teacher's  invertPoisson fuction
+   if(mu >= 0):
+        if(x >= 0):
+            if(x < 1):
+                l = math.exp(-mu)
+                k = 1
+                prob = 1 * x
+                while(prob>l):
+                    k += 1
+                    prob = prob * x
+                return k
 
 ###############################################################
 
@@ -218,12 +213,12 @@ for i in range(0,heaplae):
 x =  np.zeros((heaplonge + 1),float)
 y =  np.zeros((heaplae + 1),float)
 
-for i in range(0,heaplonge + 1): x[i] = minlong + i * Interval
+for i in range(0,heaplonge + 1): x[i] = minlong + i * Interval    ####set the x y rais word(number)
 for i in range(0,heaplae + 1): y[i] = minlatitude + i * Interval
 
 intensity =  np.zeros((heaplae,heaplonge),float)
 
-for i in range(0, heaplae):
+for i in range(0, heaplae):  ######## set the map 
     for j in range(0,heaplonge):
         intensity[i][j] = heapmap[heaplae - 1 - i][j] 
 

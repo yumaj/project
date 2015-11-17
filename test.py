@@ -243,9 +243,68 @@ plt.show() #boom
 ############################print heapmap####################
 
 
+################# simple Log Likelihood  #########################
+
+
+
+def Likelihood(testintegerrandomforecat):
+    Likelihood = 0
+
+    for i in range(0,heaplae):
+        for j in range(0,heaplonge):##
+            Likelihood += (-testintegerrandomforecat[i][j] + heapmap[i][j] * math.log(testintegerrandomforecat[i][j]) - math.log(testintegerrandomforecat[i][j]))    ####had problem 
+
+    return Likelihood
+
+
+
+######################################################################
+
+############################ grenate n forecst and find  the best  one ####################################
+
+
+n  =    100 ###set n times
+
+best = Likelihood(integerrandomforecat)
+
+bestrandomforecat = np.zeros((heaplae , heaplonge ),float)
+
+print "the first = ",best, " "
+
+
+for i in range(0, heaplae):  ######## set the first is the best
+    for j in range(0,heaplonge):
+        bestrandomforecat[i][j] = randomforecat[i][j]
+
+
+for r in range(0, n):
+
+    for i in range(0,heaplae):###gerante
+        for j in range(0,heaplonge):
+            randomforecat[i][j] = random.uniform(0, 1)
+
+    for i in range(0,heaplae):#####transfer
+        for j in range(0,heaplonge):
+
+            integerrandomforecat[i][j] = algo1(randomforecat[i][j], heapmap[i][j])
+
+    rLikelihood = Likelihood(integerrandomforecat)
+
+    if(rLikelihood >  best):
+        for i in range(0, heaplae):  ######## set the map 
+            for j in range(0,heaplonge):
+                bestrandomforecat[i][j] = randomforecat[i][j]
+
+        best = rLikelihood
+    print "the ", r,  " times = " , rLikelihood
+
+
+
+print "the best = " , best
 
 
 
 
+#######################################################################
 
 

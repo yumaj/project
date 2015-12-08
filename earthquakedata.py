@@ -1,4 +1,6 @@
 import numpy as np
+import matplotlib.pyplot as plt
+
 
 
 class data_stru:
@@ -14,6 +16,7 @@ class data_stru:
         self.hour = 0
         self.minute = 0
         self.second = 0
+        
 
       
 
@@ -35,6 +38,7 @@ class dataremodel:
         self.selectmonths = 0
         self.selectmonthe = 0
         self.nc = 0.0
+        self.score = 0.0
 
 
     def setnum(self):
@@ -110,20 +114,20 @@ class dataremodel:
         print " "
 
 
-    def printheapmap():
+    def printheapmap(self):
 
         ############################print data.dataremodel####################
-        x =  np.zeros((data.longitudebinnum + 1),float)
-        y =  np.zeros((data.latitudenum + 1),float)
+        x =  np.zeros((self.longitudebinnum + 1),float)
+        y =  np.zeros((self.latitudenum + 1),float)
 
-        for i in range(0,data.longitudebinnum + 1): x[i] = data.longitudemin + i * data.Interval    ####set the x y rais word(number)
-        for i in range(0,data.latitudenum + 1): y[i] = data.latitudemin + i * data.Interval
+        for i in range(0,self.longitudebinnum + 1): x[i] = self.longitudemin + i * self.Interval    ####set the x y rais word(number)
+        for i in range(0,self.latitudenum + 1): y[i] = self.latitudemin + i * self.Interval
 
-        intensity =  np.zeros((data.latitudenum,data.longitudebinnum),float)
+        intensity =  np.zeros((self.latitudenum,self.longitudebinnum),float)
 
-        for i in range(0, data.latitudenum):  ######## set the map 
-            for j in range(0,data.longitudebinnum):
-                intensity[i][j] = data.dataremodel[data.latitudenum - 1 - i][j] 
+        for i in range(0, self.latitudenum):  ######## set the map 
+            for j in range(0,self.longitudebinnum):
+                intensity[i][j] = self.dataremodel[self.latitudenum - 1 - i][j] 
 
 
 

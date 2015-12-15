@@ -1,27 +1,17 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import random
+import math
 
 
 
-################### random forecast###########################
 
-
-randomforecat = np.zeros((data.latitudenum , data.longitudebinnum ),float)
-
-
-########## generate the uniform balue between 0 and 1 each vin 1###################
-for i in range(0,data.latitudenum):
-    for j in range(0,data.longitudebinnum):
-        randomforecat[i][j] = random.uniform(0, 1)
-
-
-##################################################################
-
-print "randomforecat :"
-for i in range(0,data.latitudenum):
-    for j in range(0, data.longitudebinnum):
-        print randomforecat[i][j],
-    print " "
+def printrandomforecat(self,model): ## need fix 
+    print "randomforecat :"
+    for i in range(0,model.latitudenum):
+        for j in range(0, model.longitudebinnum):
+            print model[i][j],
+        print " "
 
 
 
@@ -42,64 +32,18 @@ def algo1(x, mu):       ##############from Claus  teacher's  invertPoisson fucti
 ###############################################################
 
 
-#####################Transform ###############################
+################################################
+def generatemodel(latitudenum,longitudebinnum):
 
+    randomforecat = np.zeros((latitudenum ,longitudebinnum ),float)
+    integerrandomforecat = np.zeros((latitudenum ,longitudebinnum ),float)
 
-integerrandomforecat = np.zeros((data.latitudenum , data.longitudebinnum ),float)
-
-for i in range(0,data.latitudenum):
-    for j in range(0,data.longitudebinnum):
-        
-        integerrandomforecat[i][j] = algo1(randomforecat[i][j], data.dataremodel[i][j])
-
-##########################################################
-
-print "integerrandomforecat : "
-
-for i in range(0,data.latitudenum):
-    for j in range(0, data.longitudebinnum):
-        print integerrandomforecat[i][j],
-    print " "
-
-############################ grenate n forecst and find  the best  one ####################################
- 
-n  =    100 ###set n times
-
-best = Evalate(integerrandomforecat)
-
-bestrandomforecat = np.zeros((data.latitudenum , data.longitudebinnum ),float)
-
-print "the first = ",best, " "
-
-
-for i in range(0, data.latitudenum):  ######## set the first is the best
-    for j in range(0,data.longitudebinnum):
-        bestrandomforecat[i][j] = randomforecat[i][j]
-
-
-for r in range(0, n):
-
-    for i in range(0,data.latitudenum):###gerante
-        for j in range(0,data.longitudebinnum):
+    for i in range(0,latitudenum):###gerante
+        for j in range(0,longitudebinnum):
             randomforecat[i][j] = random.uniform(0, 1)
 
-    for i in range(0,data.latitudenum):#####transfer
-        for j in range(0,data.longitudebinnum):
+    for i in range(0,latitudenum):#####Transform
+        for j in range(0,longitudebinnum):
+            integerrandomforecat[i][j] = algo1(randomforecat[i][j],randomforecat[i][j])
 
-            integerrandomforecat[i][j] = algo1(randomforecat[i][j], data.dataremodel[i][j])
-
-    rLikelihood = Likelihood(integerrandomforecat)
-
-    if(rLikelihood >  best):
-        for i in range(0, data.latitudenum):  ######## set the map 
-            for j in range(0,data.longitudebinnum):
-                bestrandomforecat[i][j] = randomforecat[i][j]
-
-        best = rLikelihood
-    print "the ", r,  " times = " , rLikelihood
-
-
-
-print "the best = " , best
-
-
+    return integerrandomforecat

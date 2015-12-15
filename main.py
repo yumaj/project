@@ -7,4 +7,6 @@ import GA
 
 GATEST = GA.GA()
 
+GATEST.main()
+
 

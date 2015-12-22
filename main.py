@@ -7,7 +7,6 @@ import randomf
 import matplotlib.pyplot as plt
 
 
-
 runtime = 10
 GAsum = 0
 Rsum = 0
@@ -29,7 +28,7 @@ for i in range(0, runtime):
 	Rscore = R.main()
 	Rsum += Rscore
 	if Rscore > Rbest:
-		Rbest = R
+		Rbest = Rscore
 	Rarr[i] = Rscore
 
 GAavg = GAsum / runtime
@@ -40,5 +39,8 @@ print "Ravg = " ,  Ravg
 print "GAbest = ", GAbest
 print "Rbest = ", Rbest
 
-plt.boxplot(GAarr)
-plt.boxplot(Rarr)
+fig = plt.figure()
+ax = fig.add_subplot(111)
+
+ax.boxplot([GAarr,Rarr])
+plt.show()

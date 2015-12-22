@@ -91,7 +91,7 @@ class GA():
             else :
                 self.newpool.append(self.Population[ip])
 
-    def tournament_selection_s(self,score): #not complete
+    def tournament_selection_s(self,score): #not use
         for i in range(0, len(self.Population)):
             for j in range(i + 1, len(self.Population)):
                 if score[i] < score[j] :
@@ -135,20 +135,23 @@ class GA():
 
             counter = 0
             rc = random.uniform(0,1)
-
             if rc < self.Crossover_Chance:
-                
-                while counter < changenum :
-                    changepointx = random.randint(0,self.latitudenum - 1)
-                    changepointy = random.randint(0,self.longitudebinnum - 1)
-                    changetemp = childa[changepointx][changepointy]
-                    childa[changepointx][changepointy] = childb[changepointx][changepointy]
-                    childb[changepointx][changepointy] = changetemp
+                cut = random.randint(0,2)
+                cutstart = cut * self.latitudenum * self.longitudebinnum / 3
+                cx = cutstart / self.latitudenum
+                cy = cutstart % self.longitudebinnum
+                while counter < (self.latitudenum * self.longitudebinnum / 3) :
+                    changetemp = childa[cx][cy]
+                    childa[cx][cy] = childb[cx][cy]
+                    childb[cx][cy] = changetemp
+                    cy += 1
                     counter += 1
-                
-            
-            rm = random.uniform(0,1)
+                    if cy >= self.longitudebinnum :
+                        cy = 0
+                        cx += 1
 
+
+            rm = random.uniform(0,1)
             if rm < self.Mutation_Chance_individual:
                 self.Mutation(childa)
             rm = random.uniform(0,1)
@@ -266,7 +269,7 @@ class GA():
 
             for i in range(0,len(self.Population)):
                 for j in range(i + 1, len(self.Population)):
-                    if score[i] > score[j]:
+                    if score[i] < score[j]:
                         score[i] , score[j] = score[j] , score[i]
                         self.Population[i] , self.Population[j] = self.Population[j] , self.Population[i]
 

@@ -50,7 +50,7 @@ class randomf():
 
 		best = -100000
 		GAf = GA.GA()
-		for i in range(0, 200 * 500):
+		for i in range(0, 200 * 100):
 			rf = randommodel.generatemodel(self.latitudenum,self.longitudebinnum)
 			intPopulation = np.zeros((data.latitudenum , data.longitudebinnum ),float)
 			intPopulation = randommodel.intergermodel(rf,self.latitudenum,self.longitudebinnum)

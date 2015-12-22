@@ -208,7 +208,6 @@ class GA():
 
         #here's our data to plot, all normal Python lists
 
-        data.printmap()
 
         ############# from data model end ########################
 
@@ -278,7 +277,7 @@ class GA():
 
 
 
-        print "best = " , best
+        print "GAbest = " , best
 
         return best
 

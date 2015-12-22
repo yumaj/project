@@ -59,7 +59,7 @@ class randomf():
 				best = score
 
 
-		print best
+		print "R best = ", best
 
 		return best
 

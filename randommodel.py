@@ -36,14 +36,24 @@ def algo1(x, mu):       ##############from Claus  teacher's  invertPoisson fucti
 def generatemodel(latitudenum,longitudebinnum):
 
     randomforecat = np.zeros((latitudenum ,longitudebinnum ),float)
-    integerrandomforecat = np.zeros((latitudenum ,longitudebinnum ),float)
 
     for i in range(0,latitudenum):###gerante
         for j in range(0,longitudebinnum):
             randomforecat[i][j] = random.uniform(0, 1)
 
+    return randomforecat
+
+################################################
+
+def intergermodel(model,latitudenum,longitudebinnum):
+    
+    integerrandomforecat = np.zeros((latitudenum ,longitudebinnum ),float)
+
     for i in range(0,latitudenum):#####Transform
         for j in range(0,longitudebinnum):
-            integerrandomforecat[i][j] = algo1(randomforecat[i][j],randomforecat[i][j])
+            integerrandomforecat[i][j] = algo1(model[i][j],model[i][j])
 
     return integerrandomforecat
+
+
+

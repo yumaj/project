@@ -4,12 +4,12 @@ import numpy as np
 import math
 import random
 import UNDX
-
+import new_UNDX
 
 class GA():
     def __init__(self):
-        self.Population_size = 50
-        self.Tournament_size = 50
+        self.Population_size = 100
+        self.Tournament_size = 100
         self.Generation = 100
         self.Crossover_Chance = 0.9
         self.Mutation_Chance_individual = 0.8
@@ -30,67 +30,21 @@ class GA():
 
     ################# simple Log Likelihood  Evaluate  #########################
 
-    def printmodel(self,model):
-        for i in range(0,self.latitudenum):
-            for j in range(0,self.longitudebinnum):##
-                print model[i][j]," ",
-            print ""
-
-    def printpool(self):
-        for i in range(0,2):
-            self.printmodel(self.Population[i])
-
 
     def Evalate(self,testintegerrandomforecat,data):
 
-        
         Likelihood = 0
-
         for i in range(0,self.latitudenum):
             for j in range(0,self.longitudebinnum):##
-                Likelihood += ( -testintegerrandomforecat[i][j] + data.dataremodel[i][j] * math.log(testintegerrandomforecat[i][j]) - math.log( math.factorial( int(data.dataremodel[i][j]) )) )    ####had problem 
+                Likelihood += (-testintegerrandomforecat[i][j] + data.dataremodel[i][j] * math.log(testintegerrandomforecat[i][j]) - math.log( math.factorial( int(data.dataremodel[i][j]) )) )    ####had problem 
 
 
         return Likelihood
-
-
-
-    ######################################################################
-
-    ######################### change point ###############################
-    def suffle(self):
-        for i in range(0 , self.chagenum):
-            changepointa = random.randint(0,len(self.Population) - 1)
-            changepointb = random.randint(0,len(self.Population) - 1)
-
-            self.Population[changepointa] , self.Population[changepointb] =  self.Population[changepointb] , self.Population[changepointa]
-
-
-
-
-
-    ######################################################################
-
-    def newpoolclear(self):
-        while len(self.newpool) != 0 :
-            self.newpool.pop()
-               
-       
      
     ########################### selection #################################
-    def P_sort(self,score):
-        for i in range(0, len(self.Population)):
-            for j in range(i + 1, len(self.Population)):
-                if score[i] < score[j] :
-                    for k in range(0, self.latitudenum):
-                        for s in range(0, self.longitudebinnum):
-                            temp = self.Population[i][k][s]
-                            self.Population[i][k][s] = self.Population[j][k][s]
-                            self.Population[j][k][s] = temp
-                    score[i] , score[j] = score[j] , score[i]
 
     def tournament_selection(self):
-        for i in range(0, len(self.Population)/2):
+        for i in range(0, self.Tournament_size):
             self.newpool.append(self.Population[i])
 
     ######################################################################
@@ -110,7 +64,7 @@ class GA():
 
     def Corssover(self):
         need = self.Tournament_size
-
+        alpha = 0.05
         while need != 0:
             changenum = random.randint(0,self.latitudenum * self.longitudebinnum / 3)
             Pa = random.randint(0,len(self.newpool) -1)
@@ -121,36 +75,51 @@ class GA():
                 Pa = random.randint(0,len(self.newpool) -1)
                 Pb = random.randint(0,len(self.newpool) -1)
                 Pc = random.randint(0,len(self.newpool) -1)   
-            
             counter = 0
             Ca = np.zeros((self.latitudenum ,self.longitudebinnum ),float)
             Cb = np.zeros((self.latitudenum,self.longitudebinnum),float)
-            for i in range(0,self.latitudenum):
-                for j in range(0, self.longitudebinnum):
-                    Ca[i][j] = self.newpool[Pa][i][j]
-                    Cb[i][j] = self.newpool[Pb][i][j]
             rc = random.uniform(0,1)
             if rc < self.Crossover_Chance:
-                UNDX.UNDX(self.newpool[Pa],self.newpool[Pb],self.newpool[Pc],Ca,Cb,self.latitudenum,self.longitudebinnum)
+                new_UNDX.UNDX(self.newpool[Pa], self.newpool[Pb], self.newpool[Pc], Ca, Cb ,self.latitudenum, self.longitudebinnum)
 
-            rm = random.uniform(0,1)
-            if rm < self.Mutation_Chance_individual:
-                self.Mutation(Ca)
-            rm = random.uniform(0,1)
-            if rm < self.Mutation_Chance_individual:
-                self.Mutation(Cb)
-            
-            self.Population.append(Ca)
-            self.Population.append(Cb)
-            need -= 2
-
-
+                rm = random.uniform(0,1)
+                if rm < self.Mutation_Chance_individual:
+                    self.Mutation(Ca)
+                rm = random.uniform(0,1)
+                if rm < self.Mutation_Chance_individual:
+                    self.Mutation(Cb)                        
+                self.Population.append(Ca)
+                self.Population.append(Cb)
+                need -= 2
 
 
     ######################################################################
 
+    def newpoolclear(self):
+        while len(self.newpool) != 0 :
+            self.newpool.pop()
+    def printmodel(self,model):
+        for i in range(0,self.latitudenum):
+            for j in range(0,self.longitudebinnum):##
+                print model[i][j]," ",
+            print ""
 
-
+    def printpool(self):
+        for i in range(0,2):
+            self.printmodel(self.Population[i])           
+       
+    def P_sort(self,score):
+        for i in range(0, len(self.Population)):
+            for j in range(i + 1, len(self.Population)):
+                if score[i] < score[j] :
+                    for k in range(0, self.latitudenum):
+                        for s in range(0, self.longitudebinnum):
+                            temp = self.Population[i][k][s]
+                            self.Population[i][k][s] = self.Population[j][k][s]
+                            self.Population[j][k][s] = temp
+                            stemp = score[i]
+                            score[i] = score[j]
+                            score[j] = stemp
 
 
 
@@ -212,51 +181,37 @@ class GA():
 
         for g in range(0,self.Generation):
 
-
-            intPopulation= np.zeros((len(self.Population), data.latitudenum , data.longitudebinnum ),float)
+            
             score = np.zeros(len(self.Population),float)
 
             for i in range(0, len(self.Population) ):
-                intPopulation[i] = randommodel.intergermodel(self.Population[i], data.latitudenum , data.longitudebinnum );
-
-            for r in range(0, len(self.Population) ):
-                score[r] = self.Evalate(intPopulation[r],data)
-            
+                intPopulation = randommodel.intergermodel(self.Population[i], data.latitudenum , data.longitudebinnum );
+                score[i] = self.Evalate(intPopulation,data)
 
             for i in range(0,len(score)):
                 if score[i] > best :
                     best = score[i]
+
             print "best = ", best
-            print " "
-            
-            self.newpoolclear()
-
-
-
-            for i in range(0, len(self.Population) ):
-                intPopulation[i] = randommodel.intergermodel(self.Population[i], data.latitudenum , data.longitudebinnum )
-
-            for r in range(0, len(self.Population) ):
-                score[r] = self.Evalate(intPopulation[r],data)
-            self.P_sort(score)
-            self.tournament_selection()
-
-            self.Corssover()
-
-            intPopulation= np.zeros((len(self.Population), data.latitudenum , data.longitudebinnum ),float)
-            score = np.zeros(len(self.Population),float)
-
-            for i in range(0, len(self.Population) ):
-                intPopulation[i] = randommodel.intergermodel(self.Population[i], data.latitudenum , data.longitudebinnum );
-
-            for r in range(0, len(self.Population) ):
-                score[r] = self.Evalate(intPopulation[r],data)
-
             self.P_sort(score)
 
-
+            for i in range(0,5):
+                print self.Population[i]
             while len(self.Population) > self.Population_size:
                 self.Population.pop()
+
+            self.newpoolclear()
+
+            score = np.zeros(len(self.Population),float)            
+            
+            for i in range(0, len(self.Population) ):
+                intPopulation = randommodel.intergermodel(self.Population[i], data.latitudenum , data.longitudebinnum )
+                score[i] = self.Evalate(intPopulation,data)
+
+
+            self.P_sort(score)
+            self.tournament_selection()
+            self.Corssover()
 
         print "GA best = " , best
 

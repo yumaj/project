@@ -54,7 +54,8 @@ class randomf():
 			rf = randommodel.generatemodel(self.latitudenum,self.longitudebinnum)
 			intPopulation = np.zeros((data.latitudenum , data.longitudebinnum ),float)
 			intPopulation = randommodel.intergermodel(rf,self.latitudenum,self.longitudebinnum)
-			score = GAf.Evalate(rf,data)
+			score = GAf.Evalate(intPopulation,data)
+
 			if score > best :
 				best = score
 

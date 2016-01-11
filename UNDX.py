@@ -14,8 +14,8 @@ def UNDX(P1, P2, P3, C1, C2,sizex,sizey):
 
 	d1 = 0
 	d2 = 0
-	alpha = 0.5
-	beta = 0.35
+	alpha = 0.1
+	beta = 0.3
 	P1e1 = 0
 	
 	P3e1 = 0
@@ -99,11 +99,9 @@ def UNDX(P1, P2, P3, C1, C2,sizex,sizey):
 		for j in range(0 , sizey):
 			newC1 = middle[i][j] + z2[i][j]
 			newC2 = middle[i][j] - z2[i][j]
-			if newC1 > 0 and newC1 < 1 :
-				C1[i][j] = middle[i][j] + z2[i][j]
-			if newC2 > 0 and newC2 < 1:
-				C2[i][j] = middle[i][j] - z2[i][j]
-
-
+			if newC1 > 0 or newC1 < 1 :
+				C1[i][j] = newC1 
+			if newC2 > 0 or newC2 < 1 :
+				C2[i][j] = newC2
 
 

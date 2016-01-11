@@ -81,8 +81,8 @@ class dataremodel:
                         if self.dataset[k].year == self.selectyear and self.dataset[k].month <= self.selectmonthe and self.dataset[k].month >= self.selectmonths:
                             self.dataremodel[i][j] += 1
                             self.nc += 1  ##earthquake happen time + 1
-
-
+                            
+                            
     def setmodel(self):
         for i in range(0,self.latitudenum):
             for j in range(0,self.longitudebinnum):
@@ -112,7 +112,8 @@ class dataremodel:
 
 
         print " "
-
+        
+                            
 
     def printheapmap(self):
 

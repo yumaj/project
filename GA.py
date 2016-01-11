@@ -14,31 +14,28 @@ class GA():
         self.Crossover_Chance = 0.9
         self.Mutation_Chance_individual = 0.8
 
+
         self.longitudemax = 145
         self.longitudemin = 140
         self.latitudemax = 35
         self.latitudemin = 30
 
-        self.Interval = 1
+        self.Interval = 0.5
         self.Mutation_Chance_chchromosome =  1/( (int)((self.longitudemax - self.longitudemin)/self.Interval) * (int)((self.latitudemax - self.latitudemin)/self.Interval) )
         self.Population = []
         self.newpool = []
-        self.chagenum = 100
 
         self.longitudebinnum = (int)((self.longitudemax - self.longitudemin)/self.Interval)   #how many bins 
         self.latitudenum = (int)((self.latitudemax - self.latitudemin)/self.Interval)  #how many bins 
-
+        self.Mutation_Chance_chromosome = 1/(self.latitudenum * self.longitudebinnum)
     ################# simple Log Likelihood  Evaluate  #########################
 
 
     def Evalate(self,testintegerrandomforecat,data):
-
         Likelihood = 0
         for i in range(0,self.latitudenum):
             for j in range(0,self.longitudebinnum):##
                 Likelihood += (-testintegerrandomforecat[i][j] + data.dataremodel[i][j] * math.log(testintegerrandomforecat[i][j]) - math.log( math.factorial( int(data.dataremodel[i][j]) )) )    ####had problem 
-
-
         return Likelihood
      
     ########################### selection #################################
@@ -49,16 +46,7 @@ class GA():
 
     ######################################################################
 
-    ########################M  Mutation   #################################
-    def Mutation(self,model):
-        for j in range(0, self.latitudenum):  ######## set the map 
-            for k in range(0, self.longitudebinnum):
-                if random.uniform(0,1) <  self.Mutation_Chance_chchromosome:
-                    model[j][k] = random.uniform(0,1)
 
-
-
-    #######################################################################
 
     ########################## CROSSOVER ##################################
 
@@ -80,17 +68,19 @@ class GA():
             Cb = np.zeros((self.latitudenum,self.longitudebinnum),float)
             rc = random.uniform(0,1)
             if rc < self.Crossover_Chance:
-                new_UNDX.UNDX(self.newpool[Pa], self.newpool[Pb], self.newpool[Pc], Ca, Cb ,self.latitudenum, self.longitudebinnum)
-
-                rm = random.uniform(0,1)
-                if rm < self.Mutation_Chance_individual:
-                    self.Mutation(Ca)
-                rm = random.uniform(0,1)
-                if rm < self.Mutation_Chance_individual:
-                    self.Mutation(Cb)                        
+                new_UNDX.UNDX(self.newpool[Pa], self.newpool[Pb], self.newpool[Pc], Ca, Cb ,self.latitudenum, self.longitudebinnum)                  
                 self.Population.append(Ca)
                 self.Population.append(Cb)
                 need -= 2
+    def Mutation(self):
+        for i in range(0, len(self.Population)):
+            irm = random.uniform(0,1)
+            if irm > self.Mutation_Chance_individual:
+                for k in range(0, self.latitudenum):
+                    for j in range(0, self.longitudebinnum):
+                        rm = random.uniform(0,1)
+                        if rm > self.Mutation_Chance_chchromosome :
+                            self.Population[k][j] = random.uniform(0,1)
 
 
     ######################################################################
@@ -138,10 +128,11 @@ class GA():
         data.longitudemin = 140
 
 
+
         data.latitudemax = 35
         data.latitudemin = 30
 
-        data.Interval = 1
+        data.Interval = 0.5
 
         data.datareader(path)
 
@@ -157,7 +148,7 @@ class GA():
 
 
 
-        data.setmodel()
+        #data.setmodel()
 
         #here's our data to plot, all normal Python lists
 
@@ -191,16 +182,12 @@ class GA():
             for i in range(0,len(score)):
                 if score[i] > best :
                     best = score[i]
-
-            print "best = ", best
+            
             self.P_sort(score)
 
-            for i in range(0,5):
-                print self.Population[i]
             while len(self.Population) > self.Population_size:
                 self.Population.pop()
 
-            self.newpoolclear()
 
             score = np.zeros(len(self.Population),float)            
             
@@ -208,10 +195,11 @@ class GA():
                 intPopulation = randommodel.intergermodel(self.Population[i], data.latitudenum , data.longitudebinnum )
                 score[i] = self.Evalate(intPopulation,data)
 
-
             self.P_sort(score)
+            self.newpoolclear()
             self.tournament_selection()
             self.Corssover()
+            self.Mutation()
 
         print "GA best = " , best
 

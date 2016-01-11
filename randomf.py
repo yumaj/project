@@ -9,7 +9,7 @@ class randomf():
 		self.longitudemin = 140
 		self.latitudemax = 35
 		self.latitudemin = 30
-		self.Interval = 1
+		self.Interval = 0.5
 
 		self.longitudebinnum = (int)((self.longitudemax - self.longitudemin)/self.Interval)   #how many bins 
 		self.latitudenum = (int)((self.latitudemax - self.latitudemin)/self.Interval)  #how many bins 	
@@ -30,7 +30,7 @@ class randomf():
 		data.latitudemax = 35
 		data.latitudemin = 30
 
-		data.Interval = 1
+		data.Interval = 0.5
 
 		data.datareader(path)
 
@@ -46,7 +46,7 @@ class randomf():
 
 
 
-		data.setmodel()
+		#data.setmodel()
 
 		best = -100000
 		GAf = GA.GA()

@@ -3,8 +3,7 @@ import randommodel
 import numpy as np
 import math
 import random
-import UNDX
-import new_UNDX
+import BLX
 
 class GA():
     def __init__(self):
@@ -52,29 +51,26 @@ class GA():
 
     def Corssover(self):
         need = 100
-
+        
         while need != 0:
             changenum = random.randint(0,self.latitudenum * self.longitudebinnum / 3)
             Pa = random.randint(0,len(self.newpool) -1)
             Pb = random.randint(0,len(self.newpool) -1)
-            Pc = random.randint(0,len(self.newpool) -1)
 
-            while Pa == Pb or Pa == Pc or Pb == Pc:
+            while Pa == Pb:
                 Pa = random.randint(0,len(self.newpool) -1)
-                Pb = random.randint(0,len(self.newpool) -1)
-                Pc = random.randint(0,len(self.newpool) -1)   
-            counter = 0
+                Pb = random.randint(0,len(self.newpool) -1)   
+            
             Ca = np.zeros((self.latitudenum ,self.longitudebinnum ),float)
-            Cb = np.zeros((self.latitudenum,self.longitudebinnum),float)
             rc = random.uniform(0,1)
-            if rc < self.Crossover_Chance:
-                new_UNDX.UNDX(self.newpool[Pa], self.newpool[Pb], self.newpool[Pc], Ca, Cb ,self.latitudenum, self.longitudebinnum)                  
+
+            if rc < self.Crossover_Chance:     
+                BLX.BLX(self.newpool[Pa],self.newpool[Pb],Ca,self.latitudenum , self.longitudebinnum)
                 self.Population.append(Ca)
-                need -= 2
+                need -= 1
             else :
                 self.Population.append(self.newpool[Pa])
-                self.Population.append(self.newpool[Pb])
-                need -= 2
+                need -= 1
     def Mutation(self):
         for i in range(0, len(self.Population)):
             irm = random.uniform(0,1)
@@ -204,7 +200,7 @@ class GA():
             self.Corssover()
             self.Mutation()
 
-        print "GA best = " , best
+        print "GAwithoutBLX best = " , best
 
         return best
 

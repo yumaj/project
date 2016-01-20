@@ -19,9 +19,11 @@ def UNDX(P1, P2, P3, C1, C2,sizex,sizey):
 			d = P2[i][j] - P1[i][j]
 			P3_P1 = (P3[i][j] - P1[i][j])*(P3[i][j] - P1[i][j])
 			D = np.sqrt(P3_P1 - ((d*P3_P1)*(d*P3_P1))/(d*d))
+			newc1 = p + (r * d) + D*(ni * (P3[i][j] - P2[i][j])/np.absolute(P3[i][j] - P2[i][j]) )
+			newc2 = p - (r * d) - D*(ni * (P3[i][j] - P2[i][j])/np.absolute(P3[i][j] - P2[i][j]) )
 
-			C1[i][j] = p + (r * d) + D*(ni * (P3[i][j] - P2[i][j])/np.absolute(P3[i][j] - P2[i][j]) )
-			C2[i][j] = p - (r * d) - D*(ni * (P3[i][j] - P2[i][j])/np.absolute(P3[i][j] - P2[i][j]) )
+			C1[i][j] = newc1
+			C2[i][j] = newc2 
 	
 
 

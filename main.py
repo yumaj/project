@@ -63,7 +63,7 @@ GAwithblxavg = GAwithBlxsum / runtime
 print "GAwithoutUNDXavg = " , GAwithoutavg
 print "GAavg = "  ,GAavg
 print "Ravg = " ,  Ravg
-print "GAblxavg = ", GAblxavg
+print "GAblxavg = ", GAwithblxavg
 
 print "GAwithoutUNDXbest = ", GAwithoutUNDXbest
 print "GAbest = ", GAbest
@@ -72,7 +72,7 @@ print "GABLXBEST = ", GAwithBlxbest
 
 
 fig = plt.figure()
-ax = fig.add_subplot(1111)
+ax = fig.add_subplot(111)
 labels = list('GRU1')
 ax.boxplot([GAarr,Rarr,GAwithoutUNDXarr,GAwithBlxarr])
 plt.show()

@@ -10,7 +10,7 @@ class GA():
     def __init__(self):
         self.Population_size = 100
         self.Tournament_size = 50
-        self.Generation = 500
+        self.Generation = 200
         self.Crossover_Chance = 0.9
         self.Mutation_Chance_individual = 0.8
 
@@ -20,7 +20,7 @@ class GA():
         self.latitudemax = 35
         self.latitudemin = 30
 
-        self.Interval = 1
+        self.Interval = 0.5
         self.Mutation_Chance_chchromosome =  1/( (int)((self.longitudemax - self.longitudemin)/self.Interval) * (int)((self.latitudemax - self.latitudemin)/self.Interval) )
         self.Population = []
         self.newpool = []
@@ -135,7 +135,7 @@ class GA():
         data.latitudemax = 35
         data.latitudemin = 30
 
-        data.Interval = 1
+        data.Interval = 0.5
 
         data.datareader(path)
 
